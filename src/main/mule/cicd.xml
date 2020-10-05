@@ -21,14 +21,5 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	"location" : attributes.uriParams.location
 }]]]></http:uri-params>
 		</http:request>
-		<!-- <http:request method="GET" doc:name="Request" doc:id="655e4907-3a5a-4244-9a5f-388218afc3d7" config-ref="HTTP_Request_configuration" path='/{area}/{location}/{region}'>
-			<http:uri-params ><![CDATA[#[output application/java
--&#45;&#45;
-{
-	"area" : attributes.uriParams.area,
-	"region" : attributes.uriParams.region,
-	"location" : attributes.uriParams.location
-}]]]></http:uri-params>
-		</http:request> -->
 	</flow>
 </mule>
