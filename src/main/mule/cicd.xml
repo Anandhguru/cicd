@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="e0bedc8b-492e-450e-b7aa-fd6e37f7b68b" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="b3b15af4-6311-4c4d-bd04-263007a0c8ea" basePath="/api/timezone">
+		<http:request-connection host="worldtimeapi.org" />
+	</http:request-config>
+	<flow name="cicdFlow" doc:id="34417a2a-1535-4b14-8382-4239d961b6a0" >
+		<http:listener doc:name="Listener" doc:id="da4b08a6-6f0b-4eb1-947b-0c5c4b395807" config-ref="HTTP_Listener_config" path="/cicd/{area}/{location}/{region}"/>
+		<http:request method="GET" doc:name="Request" doc:id="1b2c3568-2ec0-4cb7-ac51-84ebd6ac09c0" path="/{area}/{location}/{region}" config-ref="HTTP_Request_configuration">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"area" : attributes.uriParams.area,
+	"region" : attributes.uriParams.region,
+	"location" : attributes.uriParams.location
+}]]]></http:uri-params>
+		</http:request>
+		<!-- <http:request method="GET" doc:name="Request" doc:id="655e4907-3a5a-4244-9a5f-388218afc3d7" config-ref="HTTP_Request_configuration" path='/{area}/{location}/{region}'>
+			<http:uri-params ><![CDATA[#[output application/java
+-&#45;&#45;
+{
+	"area" : attributes.uriParams.area,
+	"region" : attributes.uriParams.region,
+	"location" : attributes.uriParams.location
+}]]]></http:uri-params>
+		</http:request> -->
+	</flow>
+</mule>
